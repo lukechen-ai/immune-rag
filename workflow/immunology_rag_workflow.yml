@@ -1,0 +1,478 @@
+app:
+  description: "基于RAG的免疫学文献专业医学问答系统。通过检索免疫学知识库中的文献，结合大语言模型生成专业、准确的医学解答。"
+  icon: "🧬"
+  icon_background: "#E8F4FD"
+  mode: workflow
+  name: "IT-X 免疫学文献 RAG 问答系统"
+
+kind: app
+
+version: "0.1.4"
+
+workflow:
+  conversation_variables: []
+  environment_variables: []
+  features:
+    file_upload:
+      allowed_file_extensions:
+        - .pdf
+        - .txt
+        - .md
+        - .docx
+      allowed_file_types:
+        - document
+      allowed_file_upload_methods:
+        - local_file
+        - remote_url
+      enabled: true
+      fileUploadConfig:
+        allowed_file_extensions:
+          - .pdf
+          - .txt
+          - .md
+          - .docx
+        allowed_file_types:
+          - document
+        allowed_file_upload_methods:
+          - local_file
+          - remote_url
+        image_file_size_limit: "10"
+        number_limits: 5
+    opening_statement: "您好！我是IT-X免疫学文献问答助手。我可以基于权威免疫学文献，为您提供专业的免疫学医学问题解答。请问您有什么问题？"
+    retriever_resource:
+      enabled: true
+    sensitive_word_avoidance:
+      enabled: false
+    speech_to_text:
+      enabled: false
+    suggested_questions:
+      - "什么是T细胞的激活机制？"
+      - "肿瘤免疫逃逸的主要机制有哪些？"
+      - "自身免疫性疾病的发病机理是什么？"
+    suggested_questions_after_answer:
+      enabled: true
+    text_to_speech:
+      enabled: false
+      language: ""
+      voice: ""
+
+  graph:
+    edges:
+      - data:
+          isInIteration: false
+          sourceType: start
+          targetType: llm
+        id: edge-start-query-rewrite
+        source: start-node
+        sourceHandle: source
+        target: query-rewrite-node
+        targetHandle: target
+        type: custom
+        zIndex: 0
+
+      - data:
+          isInIteration: false
+          sourceType: llm
+          targetType: knowledge-retrieval
+        id: edge-query-rewrite-retrieval
+        source: query-rewrite-node
+        sourceHandle: source
+        target: knowledge-retrieval-node
+        targetHandle: target
+        type: custom
+        zIndex: 0
+
+      - data:
+          isInIteration: false
+          sourceType: knowledge-retrieval
+          targetType: if-else
+        id: edge-retrieval-ifelse
+        source: knowledge-retrieval-node
+        sourceHandle: source
+        target: ifelse-node
+        targetHandle: target
+        type: custom
+        zIndex: 0
+
+      - data:
+          isInIteration: false
+          sourceType: if-else
+          targetType: llm
+        id: edge-ifelse-answer
+        source: ifelse-node
+        sourceHandle: "true"
+        target: answer-llm-node
+        targetHandle: target
+        type: custom
+        zIndex: 0
+
+      - data:
+          isInIteration: false
+          sourceType: if-else
+          targetType: llm
+        id: edge-ifelse-fallback
+        source: ifelse-node
+        sourceHandle: "false"
+        target: fallback-llm-node
+        targetHandle: target
+        type: custom
+        zIndex: 0
+
+      - data:
+          isInIteration: false
+          sourceType: llm
+          targetType: end
+        id: edge-answer-end
+        source: answer-llm-node
+        sourceHandle: source
+        target: end-node
+        targetHandle: target
+        type: custom
+        zIndex: 0
+
+      - data:
+          isInIteration: false
+          sourceType: llm
+          targetType: end
+        id: edge-fallback-end
+        source: fallback-llm-node
+        sourceHandle: source
+        target: end-node
+        targetHandle: target
+        type: custom
+        zIndex: 0
+
+    nodes:
+      # =====================
+      # 开始节点
+      # =====================
+      - data:
+          desc: "接收用户的免疫学问题，支持文本及文件上传"
+          selected: false
+          title: "开始"
+          type: start
+          variables:
+            - label: "用户问题"
+              max_length: 2000
+              options: []
+              required: true
+              type: paragraph
+              variable: user_query
+        height: 116
+        id: start-node
+        position:
+          x: 30
+          y: 300
+        positionAbsolute:
+          x: 30
+          y: 300
+        selected: false
+        sourcePosition: right
+        targetPosition: left
+        type: custom
+        width: 244
+
+      # =====================
+      # 查询改写节点（Query Rewriting）
+      # =====================
+      - data:
+          context:
+            enabled: false
+            variable_selector: []
+          desc: "对用户原始问题进行医学专业化改写，提升检索质量"
+          model:
+            completion_params:
+              temperature: 0.2
+              max_tokens: 512
+            mode: chat
+            name: claude-sonnet-4-6
+            provider: anthropic
+          prompt_template:
+            - id: system-prompt-query-rewrite
+              role: system
+              text: |
+                你是一位免疫学领域的专业医学助理，擅长将用户的自然语言问题转化为适合文献检索的专业查询语句。
+
+                你的任务是：
+                1. 理解用户问题的核心意图
+                2. 将问题改写为包含准确医学术语的专业查询
+                3. 识别问题中涉及的关键免疫学概念（如：T细胞、B细胞、细胞因子、抗原呈递、免疫耐受等）
+                4. 如果问题本身已经很专业，保持原文并补充相关术语
+
+                仅输出改写后的查询语句，不要解释或添加其他内容。
+
+            - id: user-prompt-query-rewrite
+              role: user
+              text: "原始问题：{{#start-node.user_query#}}\n\n请将上述问题改写为适合免疫学文献检索的专业查询："
+
+          selected: false
+          title: "查询改写"
+          type: llm
+          variables: []
+          vision:
+            enabled: false
+        height: 98
+        id: query-rewrite-node
+        position:
+          x: 330
+          y: 300
+        positionAbsolute:
+          x: 330
+          y: 300
+        selected: false
+        sourcePosition: right
+        targetPosition: left
+        type: custom
+        width: 244
+
+      # =====================
+      # 知识库检索节点
+      # =====================
+      - data:
+          dataset_configs:
+            datasets:
+              - dataset:
+                  enabled: true
+                  id: IMMUNOLOGY_DATASET_ID  # 替换为实际的知识库ID
+            retrieval_model:
+              reranking_enable: true
+              reranking_mode: reranking_model
+              reranking_model:
+                provider: cohere
+                model: rerank-multilingual-v3.0
+              score_threshold: 0.3
+              score_threshold_enabled: true
+              search_method: hybrid_search
+              top_k: 8
+              weights:
+                keyword_setting:
+                  keyword_weight: 0.3
+                vector_setting:
+                  embedding_model_name: text-embedding-3-large
+                  embedding_provider_name: openai
+                  vector_weight: 0.7
+          desc: "从免疫学文献知识库中检索相关内容"
+          query_variable_selector:
+            - query-rewrite-node
+            - text
+          selected: false
+          title: "知识库检索"
+          type: knowledge-retrieval
+        height: 90
+        id: knowledge-retrieval-node
+        position:
+          x: 630
+          y: 300
+        positionAbsolute:
+          x: 630
+          y: 300
+        selected: false
+        sourcePosition: right
+        targetPosition: left
+        type: custom
+        width: 244
+
+      # =====================
+      # 条件判断节点（是否检索到相关内容）
+      # =====================
+      - data:
+          cases:
+            - case_id: "has-context"
+              conditions:
+                - comparison_operator: "not empty"
+                  value: ""
+                  variable_selector:
+                    - knowledge-retrieval-node
+                    - result
+              id: "has-context"
+              logical_operator: and
+          desc: "判断知识库是否检索到相关文献"
+          selected: false
+          title: "是否有相关文献"
+          type: if-else
+        height: 106
+        id: ifelse-node
+        position:
+          x: 930
+          y: 300
+        positionAbsolute:
+          x: 930
+          y: 300
+        selected: false
+        sourcePosition: right
+        targetPosition: left
+        type: custom
+        width: 244
+
+      # =====================
+      # 主回答LLM节点（有文献支持时）
+      # =====================
+      - data:
+          context:
+            enabled: true
+            variable_selector:
+              - knowledge-retrieval-node
+              - result
+          desc: "基于检索到的免疫学文献生成专业医学解答"
+          model:
+            completion_params:
+              temperature: 0.3
+              max_tokens: 2048
+              top_p: 0.9
+            mode: chat
+            name: claude-sonnet-4-6
+            provider: anthropic
+          prompt_template:
+            - id: system-prompt-answer
+              role: system
+              text: |
+                你是一位资深免疫学专家和临床医生，拥有丰富的免疫学基础研究和临床实践经验。
+                你需要基于提供的免疫学文献资料，为用户提供专业、准确、循证的医学解答。
+
+                ## 回答原则
+                1. **循证医学**：所有观点必须基于提供的文献资料，引用具体来源
+                2. **专业性**：使用准确的医学术语，必要时提供中英文对照
+                3. **系统性**：从分子机制、细胞水平、器官系统等层面系统阐述
+                4. **临床关联**：将基础免疫学知识与临床意义相结合
+                5. **安全性**：对于涉及治疗的问题，明确说明需要在专业医生指导下进行
+
+                ## 回答格式
+                请按照以下结构回答：
+
+                ### 📋 问题概述
+                简要概括问题的核心要点
+
+                ### 🔬 机制解析
+                从免疫学角度详细阐述相关机制
+
+                ### 📚 文献依据
+                引用检索到的文献中的关键证据，格式：[文献标题/作者] 指出...
+
+                ### 💊 临床意义（如适用）
+                阐述相关临床应用或诊疗意义
+
+                ### ⚠️ 注意事项
+                列出重要的注意事项或局限性
+
+                ---
+                *本回答基于免疫学文献数据库，仅供专业参考。临床诊疗决策请咨询执业医师。*
+
+            - id: user-prompt-answer
+              role: user
+              text: |
+                ## 用户问题
+                {{#start-node.user_query#}}
+
+                ## 检索到的相关文献资料
+                {{#context#}}
+
+                请基于以上文献资料，提供专业的免疫学医学解答：
+
+          selected: false
+          title: "专业医学解答"
+          type: llm
+          variables: []
+          vision:
+            enabled: false
+        height: 98
+        id: answer-llm-node
+        position:
+          x: 1230
+          y: 180
+        positionAbsolute:
+          x: 1230
+          y: 180
+        selected: false
+        sourcePosition: right
+        targetPosition: left
+        type: custom
+        width: 244
+
+      # =====================
+      # 兜底LLM节点（无相关文献时）
+      # =====================
+      - data:
+          context:
+            enabled: false
+            variable_selector: []
+          desc: "当知识库中无相关文献时，提供基础免疫学知识解答并建议查阅专业资料"
+          model:
+            completion_params:
+              temperature: 0.4
+              max_tokens: 1024
+            mode: chat
+            name: claude-sonnet-4-6
+            provider: anthropic
+          prompt_template:
+            - id: system-prompt-fallback
+              role: system
+              text: |
+                你是一位免疫学专家助手。当知识库中没有找到与用户问题直接相关的文献时，
+                你需要：
+                1. 诚实告知用户当前知识库中暂无直接相关文献
+                2. 基于你的免疫学专业知识提供基础解答
+                3. 建议用户查阅的权威资源（如PubMed、UpToDate、免疫学教材等）
+                4. 提示用户可以尝试换用不同关键词重新提问
+
+                回答要简洁、专业，并明确标注哪些内容来自你的基础知识（非文献检索）。
+
+            - id: user-prompt-fallback
+              role: user
+              text: |
+                用户问题：{{#start-node.user_query#}}
+
+                改写后的检索查询：{{#query-rewrite-node.text#}}
+
+                很遗憾，在免疫学文献知识库中未找到与此问题直接相关的文献。
+                请基于你的专业知识提供基础解答，并引导用户获取更多专业资源：
+
+          selected: false
+          title: "兜底回答"
+          type: llm
+          variables: []
+          vision:
+            enabled: false
+        height: 98
+        id: fallback-llm-node
+        position:
+          x: 1230
+          y: 420
+        positionAbsolute:
+          x: 1230
+          y: 420
+        selected: false
+        sourcePosition: right
+        targetPosition: left
+        type: custom
+        width: 244
+
+      # =====================
+      # 结束节点
+      # =====================
+      - data:
+          desc: "输出最终的免疫学医学解答"
+          outputs:
+            - value_selector:
+                - answer-llm-node
+                - text
+              variable: answer
+            - value_selector:
+                - fallback-llm-node
+                - text
+              variable: fallback_answer
+          selected: false
+          title: "结束"
+          type: end
+        height: 116
+        id: end-node
+        position:
+          x: 1530
+          y: 300
+        positionAbsolute:
+          x: 1530
+          y: 300
+        selected: false
+        sourcePosition: right
+        targetPosition: left
+        type: custom
+        width: 244
