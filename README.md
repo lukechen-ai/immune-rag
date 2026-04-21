@@ -1,8 +1,8 @@
-# ITX-Immune-Expert
+# immune-rag
 
 <div align="center">
 
-**AI-Powered PubMed Literature Intelligence System**
+**AI-Powered PubMed Literature RAG System**
 
 *A complete pipeline from PubMed batch download → RAG knowledge base → LLM-powered Q&A for immune medical research*
 
@@ -15,7 +15,7 @@
 
 ## 🔥 What It Does
 
-ITX-Immune-Expert is an end-to-end AI system for immune medical research literature:
+immune-rag is an end-to-end AI system for immune medical research literature:
 
 ```
 PubMed Search → Batch Download → Immune Keyword Filtering → RAG Knowledge Base → LLM Q&A
@@ -102,7 +102,7 @@ python chat_with_kb.py
 ## 📁 Project Structure
 
 ```
-ITX-immune-expert/
+immune-rag/
 ├── pubmed_downloader_v4_enhanced.py  # Core download engine
 ├── filter_immune_papers.py          # Immune keyword filtering
 ├── download_by_indicators.py        # Combined download workflow
@@ -162,11 +162,11 @@ ITX-immune-expert/
 
 ---
 
-## 📬 Contact
+## 📬 Contact & Support
 
 - **Author**: Luke Chen
-- **Email**: luchichen000@gmail.com
 - **GitHub**: [@lukechen-ai](https://github.com/lukechen-ai)
+- **Issues**: Open an issue on GitHub for questions or feature requests
 
 ---
 

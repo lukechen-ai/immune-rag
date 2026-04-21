@@ -15,7 +15,7 @@ build_knowledge_base.py
   python build_knowledge_base.py --data-dir ./downloaded_index --keywords ./immune_keywords.txt --db ./immune_kb.db
   python build_knowledge_base.py --steps 1
   python build_knowledge_base.py --steps 1,2
-  python build_knowledge_base.py --steps 3 --email luchichen000@gmail.com
+  python build_knowledge_base.py --steps 3 --email your_email@example.com
   python build_knowledge_base.py --steps 4
   python build_knowledge_base.py --steps 5
 """
