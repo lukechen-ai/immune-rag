@@ -1,0 +1,515 @@
+# ============================================================
+# 免疫相关关键词白名单
+# 用于 PubMed 文献筛选模式（IMMUNE_FILTER_MODE=True）
+# ============================================================
+#
+# 格式规则（v2 — 支持别名映射）：
+#
+#   ## 分组名             → 分组标题
+#   标准名称              → 单一名称，无别名（旧格式，向后兼容）
+#   标准名称 | 别名1 | 别名2 | ...
+#                         → | 左侧第一个为「标准名称」（用于 downloaded_index/ 目录名）
+#                           | 右侧为该指标的其他别名（用于 PubMed 搜索）
+#                           → 所有别名命中均保存到「标准名称」目录下
+#   # 注释               → 单行注释，忽略
+#   空行                  → 忽略
+#
+# PubMed 查询说明：
+#   标准名称和所有别名都会参与 PubMed 查询（[tiab] 字段）
+#   命中任意一个别名 → 文章保存到「标准名称」对应的目录
+#
+# 示例：
+#   TNF-alpha | TNF | tumor necrosis factor alpha | TNF-α
+#   → 搜索 TNF-alpha[tiab] OR TNF[tiab] OR "tumor necrosis factor alpha"[tiab] OR TNF-α[tiab]
+#   → 命中后统一保存到 downloaded_index/TNF-alpha/
+#
+# ============================================================
+
+
+
+## 细胞因子 / Cytokines
+
+# CSV All_Aliases: IL-1; IL1-BETA; IL1F2; IL1beta
+# CSV NCBI_Other_Designations: interleukin-1 beta|IL-1 beta|catabolin|preinterleukin 1 beta
+IL-1 | IL-1beta | IL-1 beta | IL1beta | IL1F2 | interleukin-1 | interleukin 1 | catabolin
+
+# IL-1 beta 合并入 IL-1（同 Gene ID，IL-1 即 IL-1beta）
+IL-1 beta | IL-1beta | interleukin-1 beta | interleukin-1-beta
+
+# CSV All_Aliases: CRMO2; DIRA; ICIL-1RA; IL-1RN; IL-1ra; IL1F3; IRAP; MVCD4
+# CSV NCBI_Other_Designations: interleukin-1 receptor antagonist protein|IL1 inhibitor|IRAP
+IL-1RA | IL-1RN | IL-1ra | IRAP | IL1F3 | interleukin-1 receptor antagonist | interleukin-1 receptor antagonist protein
+
+# CSV All_Aliases: IL-2; TCGF; lymphokine
+# CSV NCBI_Other_Designations: T cell growth factor|aldesleukin
+IL-2 | interleukin-2 | interleukin 2 | TCGF | T cell growth factor | aldesleukin
+
+# CSV All_Aliases: BCGF-1; BCGF1; BSF-1; BSF1; IL-4
+# CSV NCBI_Other_Designations: B cell growth factor 1|B_cell stimulatory factor 1|binetrakin
+IL-4 | interleukin-4 | interleukin 4 | BCGF-1 | BSF-1 | binetrakin
+
+# CSV All_Aliases: EDF; IL-5; TRF
+# CSV NCBI_Other_Designations: B-cell differentiation factor I|T-cell replacing factor|eosinophil differentiation factor
+IL-5 | interleukin-5 | interleukin 5 | EDF | TRF | eosinophil differentiation factor
+
+# CSV All_Aliases: BSF-2; BSF2; CDF; HGF; HSF; IFN-beta-2; IFNB2; IL-6
+# CSV NCBI_Other_Designations: B-cell differentiation factor|B-cell stimulatory factor 2|hybridoma growth factor|interferon beta-2
+IL-6 | interleukin-6 | interleukin 6 | BSF-2 | IFN-beta-2 | hybridoma growth factor | B-cell stimulatory factor 2
+
+# CSV All_Aliases (CXCR1): C-C-CKR-1; CD128; CD181; IL8R1; IL8RA
+# CXCL8 是 IL-8 的官方基因符号（Entrez 3576）
+IL-8 | interleukin-8 | interleukin 8 | CXCL8 | IL8 | CD128 | CD181
+
+# CSV All_Aliases: CSIF; GVHDS; IL-10; IL10A; TGIF
+# CSV NCBI_Other_Designations: cytokine synthesis inhibitory factor|T-cell growth inhibitory factor
+IL-10 | interleukin-10 | interleukin 10 | CSIF | cytokine synthesis inhibitory factor
+
+# CSV All_Aliases (IL12RB1): CD212; IL-12R-BETA1; IL12RB
+# CSV NCBI_Other_Designations: IL-12 receptor subunit beta-1
+IL-12 | interleukin-12 | interleukin 12 | IL-12p40 | CD212 | IL12RB1
+
+IL-12p70 | interleukin-12p70 | IL12p70
+
+# CSV All_Aliases: IL-13; P600
+IL-13 | interleukin-13 | interleukin 13
+
+# CSV All_Aliases: IL-15
+IL-15 | interleukin-15 | interleukin 15
+
+# CSV All_Aliases (IL17RE): no useful aliases
+IL-17 | interleukin-17 | interleukin 17
+
+# CSV All_Aliases: CTLA-8; CTLA8; IL-17; IL-17A; IL17; ILA17
+# CSV NCBI_Other_Designations: cytotoxic T-lymphocyte-associated antigen 8
+IL-17A | interleukin-17A | interleukin 17A | CTLA-8 | IL17
+
+# CSV All_Aliases: IGIF; IL-18; IL-1g; IL1F4
+# CSV NCBI_Other_Designations: IFN-gamma-inducing factor|iboctadekin|IL-1 gamma
+IL-18 | interleukin-18 | interleukin 18 | IGIF | IFN-gamma-inducing factor | IL1F4
+
+# CSV All_Aliases (IL21R): CD360; NILR
+IL-21 | interleukin-21 | interleukin 21 | CD360
+
+# CSV All_Aliases (IL23R): PSORS7
+IL-23 | interleukin-23 | interleukin 23
+
+IL-33 | interleukin-33 | interleukin 33
+
+# CSV All_Aliases: DIF; IMD127; TNF-alpha; TNFA; TNFSF2; TNLG1F
+# CSV NCBI_Other_Designations: tumor necrosis factor-alpha|TNF-a|tumor necrotic factor alpha
+TNF-alpha | TNF | TNF-α | TNFA | TNFSF2 | DIF | tumor necrosis factor alpha | tumor necrosis factor-alpha | TNF-a
+
+# CSV All_Aliases (IFNG): IFG; IFI; IMD69
+# CSV NCBI_Other_Designations: IFN-gamma|immune interferon
+IFN-gamma | IFN-γ | IFNG | interferon gamma | interferon-gamma | immune interferon
+
+# CSV All_Aliases (IFNA7): IFN-alphaJ; IFNA-J
+IFN-alpha | IFN-α | interferon alpha | interferon-alpha | IFNA
+
+IFN-alpha2 | IFN-alpha 2 | interferon alpha 2 | IFNA2
+
+# CSV All_Aliases (IFNB1): IFB; IFF; IFN-beta; IFNB
+# CSV NCBI_Other_Designations: fibroblast interferon|interferon-beta
+IFN-beta | IFN-β | IFNB1 | IFNB | interferon beta | interferon-beta | fibroblast interferon
+
+TGF-beta | TGF-β | TGFB1 | transforming growth factor beta | transforming growth factor-beta | TGF beta
+
+# CSV All_Aliases (CSF2RA): CD116; CSF2R; GM-CSF-R-alpha; GMCSFR
+GM-CSF | granulocyte-macrophage colony-stimulating factor | CSF2 | GMCSFR
+
+M-CSF | macrophage colony-stimulating factor | CSF1
+
+# CSV All_Aliases (VEGFA): L-VEGF; MVCD1; VEGF; VPF
+# CSV NCBI_Other_Designations: vascular permeability factor
+VEGF | vascular endothelial growth factor | VEGFA | VPF | vascular permeability factor
+
+# CSV All_Aliases (CXCL10): C7; IFI10; INP10; IP-10; SCYB10; crg-2; gIP-10; mob-1
+# CSV NCBI_Other_Designations: 10 kDa interferon gamma-induced protein|gamma IP10
+IP-10 | CXCL10 | INP10 | interferon gamma-induced protein 10 | interferon-inducible protein 10 | gamma IP10
+
+# CSV All_Aliases (CXCL13): ANGIE; ANGIE2; BCA-1; BCA1; BLC; SCYB13
+# CSV NCBI_Other_Designations: B-cell-attracting chemokine 1|B lymphocyte chemoattractant|B-cell chemoattractant
+BCA-1 | CXCL13 | BLC | B-cell-attracting chemokine 1 | B lymphocyte chemoattractant | B-cell chemoattractant
+
+# CSV NCBI_Other_Designations: thymic stromal lymphopoietin|thymic stroma-derived lymphopoietin
+TSLP | thymic stromal lymphopoietin | thymic stroma-derived lymphopoietin
+
+Granzyme B | GZMB | granzyme-B
+
+# CSV All_Aliases (GZMH): CCP-X; CGL-2; CSP-C; CTLA1; CTSGL2
+granzyme | GZMA | GZMH | GZMK | GZMM
+
+# CSV NCBI_Other_Designations (PRTN3): antineutrophil cytoplasmic antibody (in ANCA row)
+antineutrophil cytoplasmic antibody | ANCA | anti-neutrophil cytoplasmic antibody
+
+# CSV All_Aliases (LTB4R2): BLT2; BLTR2; JULF2; LTB4-R 2; LTB4-R2; NOP9
+leukotriene B4 | LTB4 | leukotriene-B4 | BLT2
+
+leukotriene | LTC4 | LTD4 | LTE4
+
+arachidonic acid
+
+neutrophil-lymphocyte ratio | NLR | neutrophil to lymphocyte ratio
+
+## 自身抗体 / Autoantibodies
+
+autoantibody | autoantibodies | anti-self antibody
+
+rheumatoid factor | RF | anti-rheumatoid factor
+
+anti-CCP | anti-cyclic citrullinated peptide | cyclic citrullinated peptide | CCP antibody | anti-CCP antibody
+
+# CSV All_Aliases (NEUROG1): AKA
+AKA | anti-keratin antibody | antikeratin antibody
+
+APF | antiperinuclear factor | anti-perinuclear factor
+
+antinuclear antibody | ANA | ANAs | anti-nuclear antibody
+
+dsDNA | anti-dsDNA | anti-double-stranded DNA | double-stranded DNA antibody
+
+# CSV All_Aliases (ENAH): ENA; MENA
+ENA | extractable nuclear antigen | anti-ENA
+
+nRNP | anti-nRNP | nuclear ribonucleoprotein
+
+anti-Sm | anti-Smith | Sm antibody
+
+# CSV All_Aliases (TRIM21): RNF81; RO52; Ro/SSA; SSA; SSA1
+# CSV NCBI_Other_Designations: 52 kDa Ro protein|52 kDa ribonucleoprotein autoantigen Ro/SS-A|Ro(SS-A)
+SS-A | Ro-52 | anti-SSA | anti-Ro | Ro/SSA | SSA antibody | RO52
+
+# CSV All_Aliases (SSB): LARP3; La; La/SSB
+# CSV NCBI_Other_Designations: lupus La protein|SS-B/La protein|la autoantigen
+SS-B | anti-SSB | anti-La | La/SSB | SSB antibody | lupus La protein
+
+# CSV All_Aliases (TOP1): TOPI
+# CSV NCBI_Other_Designations: Scl-70 antigen|type I DNA topoisomerase
+Scl-70 | anti-Scl-70 | anti-topoisomerase I | topoisomerase I antibody | topoisomerase 1
+
+anti-PM | anti-PM/Scl | PM-Scl antibody
+
+# CSV All_Aliases (HARS1): CMT2W; HARS; HRS; USH3B
+# CSV NCBI_Other_Designations: Jo-1 antigen|histidine translase|HisRS
+Jo-1 | anti-Jo-1 | histidyl-tRNA synthetase antibody | HARS | HRS | Jo-1 antigen
+
+# CSV All_Aliases (CENPB): CENP-B
+# CSV NCBI_Other_Designations: CENP-B|major centromere autoantigen B
+CENPB | CENP-B | anti-CENP-B | centromere protein B antibody | centromere autoantigen B
+
+PCNA | anti-PCNA | proliferating cell nuclear antigen antibody
+
+AMA-M2 | anti-mitochondrial antibody | AMA | antimitochondrial antibody
+
+# CSV All_Aliases (PRTN3): ACPA; AGP7; C-ANCA; CANCA; MBN; MBT; NP-4; PR-3; PR3
+# CSV NCBI_Other_Designations: C-ANCA antigen|Wegener granulomatosis autoantigen|myeloblastin|PR3
+ANCA | antineutrophil cytoplasmic antibody | anti-neutrophil cytoplasmic | PR3 | proteinase 3 | C-ANCA | myeloblastin
+
+anticardiolipin antibody | aCL | anti-cardiolipin | cardiolipin antibody | ACA
+
+beta-2 glycoprotein | B2GP | beta2-glycoprotein | beta 2 glycoprotein I | anti-beta2-GPI
+
+antiphospholipid antibody | aPL | anti-phospholipid antibody | phospholipid antibody
+
+lactate dehydrogenase | LDH
+
+## 免疫球蛋白 / Immunoglobulins
+
+# CSV All_Aliases (FCGBP): FC(GAMMA)BP
+# CSV NCBI_Other_Designations: IgGFc-binding protein
+IgG | immunoglobulin G
+
+# CSV All_Aliases (CD79A): IGA; IGAlpha; MB-1; MB1
+IgA | immunoglobulin A
+
+# CSV All_Aliases (CD40LG): CD154; CD40L; HIGM1; IGM; TRAP; gp39
+IgM | immunoglobulin M
+
+# CSV All_Aliases (IGHE): IgE
+IgE | immunoglobulin E
+
+IgG4 | immunoglobulin G4 | IgG subclass 4
+
+## B 细胞亚群 / B Cell Subsets
+
+# CSV All_Aliases (TNFSF13B): BAFF; BLYS; CD257; TALL-1; THANK; TNFSF20; ZTNF4
+# CSV NCBI_Other_Designations: B-cell-activating factor|B-lymphocyte stimulator|Delta4 BAFF
+BAFF | B cell activating factor | B-cell activating factor | BLyS | BLYS | CD257 | TNFSF13B | TALL-1
+
+# CSV All_Aliases (TNFSF13): APRIL; CD256; TALL-2; TNLG7B; TRDL-1; ZTNF2
+# CSV NCBI_Other_Designations: a proliferation-inducing ligand
+APRIL | a proliferation-inducing ligand | CD256 | TNFSF13 | TALL-2
+
+B cell | B-cell | B lymphocyte
+
+# CSV All_Aliases (CD19): B4; CVID3
+CD19 | B4 | B-lymphocyte antigen CD19
+
+# CSV All_Aliases (MS4A1): B1; Bp35; CD20; CVID5; FMC7; LEU-16; S7
+CD20 | MS4A1 | Bp35 | FMC7 | B-lymphocyte antigen CD20
+
+# CSV All_Aliases (CR2): C3DR; CD21; CR; CVID7
+CD21 | CR2 | complement receptor 2 | C3DR | EBV receptor
+
+# CSV All_Aliases (CD24): CD24A
+CD24 | CD24A
+
+# CSV All_Aliases (CD27): S152; TNFRSF7; Tp55
+CD27 | TNFRSF7 | T-cell activation antigen CD27
+
+# CSV All_Aliases (CD38): ADPRC 1; ADPRC1; cADPR1
+CD38 | ADPRC1 | ADP-ribosyl cyclase | cyclic ADP-ribose hydrolase
+
+CD4 TEMRA | CD4+ TEMRA
+CD4 Naive | CD4+ naive | naïve CD4
+CD4 CM | CD4+ central memory | CD4 central memory
+CD4 EM | CD4+ effector memory | CD4 effector memory
+CD8 TEMRA | CD8+ TEMRA
+CD8 Naive | CD8+ naive | naïve CD8
+CD8 CM | CD8+ central memory | CD8 central memory
+CD8 EM | CD8+ effector memory | CD8 effector memory
+Effector B cells | effector B cell
+Non-Switched Effector B cells | non-switched effector B cell | unswitched effector B cell
+Switched Effector B cells | switched effector B cell | class-switched effector B cell
+Memory B cells | memory B cell
+Naïve B cells | naive B cell | naïve B cell
+Non-Switched Memory B cells | non-switched memory B cell | unswitched memory B cell
+Switched Memory B cells | switched memory B cell | class-switched memory B cell
+DN B cells | double negative B cell | DN B cell
+Transitional B cells | transitional B cell
+CD279(PD-1) expression in naïve CD4 | PD-1 expression naive CD4
+CD278(ICOS) expression in naïve CD4 | ICOS expression naive CD4
+CD279(PD-1) expression in memory CD4 | PD-1 expression memory CD4
+CD278(ICOS) expression in memory CD4 | ICOS expression memory CD4
+CD279(PD-1) expression in naïve CD8 | PD-1 expression naive CD8
+CD278(ICOS) expression in naïve CD8 | ICOS expression naive CD8
+CD278(ICOS) expression in memory CD8 | ICOS expression memory CD8
+CD279(PD-1) expression in memory CD8 | PD-1 expression memory CD8
+CD86 expression in naïve B cells | CD86 naive B cell
+CD71 expression in naïve B cells | CD71 naive B cell
+CD274(PD-L1) expression in naïve B cells | PD-L1 naive B cell
+CD40 expression in naïve B cells | CD40 naive B cell
+CD86 expression in non-switched memory B cells | CD86 non-switched memory B cell
+CD71 expression in non-switched memory B cells | CD71 non-switched memory B cell
+CD274(PD-L1) expression in non-switched memory B cells | PD-L1 non-switched memory B cell
+CD40 expression in non-switched memory B cells | CD40 non-switched memory B cell
+CD86 expression in switched memory B cells | CD86 switched memory B cell
+CD71 expression in switched memory B cells | CD71 switched memory B cell
+CD274(PD-L1) expression in switched memory B cells | PD-L1 switched memory B cell
+CD40 expression in switched memory B cells | CD40 switched memory B cell
+CD86 expression in transitional B cells | CD86 transitional B cell
+CD71 expression in transitional B cells | CD71 transitional B cell
+CD274(PD-L1) expression in transitional B cells | PD-L1 transitional B cell
+CD40 expression in transitional B cells | CD40 transitional B cell
+
+## T 细胞亚群 / T Cell Subsets
+
+T cell | T-cell | T lymphocyte
+
+# CSV All_Aliases (CD3D): CD3-DELTA; CD3DELTA; IMD19; T3D
+CD3 | CD3D | CD3delta | T-cell receptor complex
+
+TCR | T-cell receptor | T cell receptor
+
+TCR alpha beta | TCRαβ | TCR alpha-beta | alpha-beta T cell receptor
+TCR gamma delta | TCRγδ | TCR gamma-delta | gamma-delta T cell receptor
+
+# CSV All_Aliases (CD4): CD4mut; Leu-3; OKT4D; T4
+CD4 | CD4+ T cell | CD4 T cell | helper T cell | Th cell | Leu-3
+
+Th1 | T helper 1 | type 1 helper T cell
+Th2 | T helper 2 | type 2 helper T cell
+Th17 | T helper 17 | interleukin-17-producing T cell
+
+# CSV All_Aliases (CD8A): CD8; CD8alpha; Leu2; p32
+CD8 | CD8+ T cell | CD8 T cell | cytotoxic T cell | cytotoxic T lymphocyte | CD8alpha | Leu2
+
+TEMRA | terminally differentiated effector memory T cell | effector memory RA T cell
+
+# CSV All_Aliases (BBX): ARTC1; HBP2; HSPC339
+# CSV NCBI_Other_Designations: Ag recognized by Treg cells 1
+Treg | regulatory T cell | T regulatory cell | FOXP3+ T cell
+
+# CSV All_Aliases (ISG20): CD25; HEM45
+CD25 | ISG20 | IL-2 receptor alpha | IL2RA
+
+# CSV All_Aliases (IL7R): CD127; CDW127; IL-7R-alpha; IL-7Ralpha; IL7RA; lnc-IL7R; sIL-7R
+CD127 | IL7R | IL7RA | IL-7R-alpha | sIL-7R | IL-7 receptor alpha
+
+# CSV NCBI_Other_Designations (FLICR): Foxp3 long intergenic noncoding RNA
+FOXP3 | forkhead box P3 | scurfin
+
+# CSV All_Aliases (CD33): CD33rSiglec; SIGLEC-3; SIGLEC3; p67
+CD33 | SIGLEC3 | Siglec-3 | myeloid cell surface antigen CD33
+
+mast cell | mastocyte
+
+CD69 expression in naïve CD4 | CD69 naive CD4
+HLA-DR expression in naïve CD4 | HLA-DR naive CD4
+CD57 expression in naïve CD4 | CD57 naive CD4
+CD223(LAG3) expression in naïve CD4 | LAG3 naive CD4
+CD69 expression in memory CD4 | CD69 memory CD4
+HLA-DR expression in memory CD4 | HLA-DR memory CD4
+CD57 expression in memory CD4 | CD57 memory CD4
+CD223(LAG3) expression in memory CD4 | LAG3 memory CD4
+CD69 expression in naïve CD8 | CD69 naive CD8
+CD223(LAG3) expression in naïve CD8 | LAG3 naive CD8
+HLA-DR expression in naïve CD8 | HLA-DR naive CD8
+CD57 expression in naïve CD8 | CD57 naive CD8
+CD223(LAG3) expression in memory CD8 | LAG3 memory CD8
+CD57 expression in memory CD8 | CD57 memory CD8
+HLA-DR expression in memory CD8 | HLA-DR memory CD8
+CD69 expression in memory CD8 | CD69 memory CD8
+
+## NK 细胞 / NK Cells
+
+NK cell | natural killer cell | NK-cell
+
+# CSV All_Aliases (NCAM1): CD56; MSK39; NCAM
+CD56 | NCAM1 | NCAM | neural cell adhesion molecule 1
+
+# CSV All_Aliases (FCGR3B): CD16; CD16-I; CD16b; FCG3; FCGR3; FCRIIIb; HNA-1
+CD16 | FCGR3 | FCGR3B | FcgammaRIIIb | Fc gamma receptor III | FCRIIIb | HNA-1
+
+CAR-NK | chimeric antigen receptor NK cell | CAR-NK cell
+
+## 单核细胞与髓源抑制性细胞 / Monocytes & MDSC
+
+# CSV All_Aliases (MMD): MMA; MMD1; PAQR11
+monocyte | monocytes
+
+# CSV All_Aliases (CD14): (no aliases in CSV)
+CD14 | monocyte differentiation antigen CD14
+
+MDSC | myeloid-derived suppressor cell | myeloid derived suppressor cell
+PMN-MDSC | polymorphonuclear MDSC | granulocytic MDSC | G-MDSC
+eMDSC | early-stage MDSC | Lin- HLA-DR- CD33+ MDSC
+
+# CSV All_Aliases (ITGAM): CD11B; CR3A; HNA-4; MAC-1; MAC1A; MO1A; SLEB6
+# CSV NCBI_Other_Designations: CD11 antigen-like family member B|Mac-1 alpha|macrophage-1 antigen
+CD11b | ITGAM | integrin alpha M | Mac-1 alpha | CR3A | HNA-4
+
+# CSV All_Aliases (FUT4): CD15; ELFT; FCT3A; FUC-TIV; FUTIV; LeX; SSEA-1
+# CSV NCBI_Other_Designations: Lewis X|stage-specific embryonic antigen 1|fucosyltransferase IV
+CD15 | FUT4 | Lewis X | SSEA-1 | CD15 antigen | FUC-TIV
+
+Classical Monocytes | classical monocyte | CD14++ CD16- monocyte
+Intermediate Monocytes | intermediate monocyte | CD14++ CD16+ monocyte
+Non-classical Monocytes | non-classical monocyte | CD14+ CD16++ monocyte
+Neutrophils | neutrophil | polymorphonuclear leukocyte | PMN
+
+## 树突状细胞 / Dendritic Cells
+
+dendritic cell | dendritic cells | DC
+
+# CSV All_Aliases (ADAM11): MDC
+mDC | myeloid dendritic cell | conventional dendritic cell | cDC | MDC
+
+pDC | plasmacytoid dendritic cell | plasmacytoid DC
+
+# CSV All_Aliases (ITGAX): CD11C; SLEB6
+# CSV NCBI_Other_Designations: integrin alpha-X|complement component 3 receptor 4 subunit
+CD11c | ITGAX | integrin alpha X | CD11C | complement component 3 receptor 4
+
+# CSV All_Aliases (IL3RA): CD123; IL-3R-alpha; IL3R; IL3RAY; IL3RX; IL3RY; hIL-3Ra
+CD123 | IL3RA | IL3R | IL-3R-alpha | IL-3 receptor alpha | hIL-3Ra
+
+# CSV All_Aliases (HLA-DRA): HLA-DRA1
+# CSV NCBI_Other_Designations: HLA class II histocompatibility antigen, DR alpha chain|MHC class II antigen DRA
+HLA-DR | HLA-DRA | MHC class II | human leukocyte antigen DR | HLA DR | HLA-DRA1
+
+## 固有免疫细胞 / Innate Immune Cells
+
+# CSV All_Aliases (MMP12): HME; ME; MME; MMP-12
+macrophage | macrophages | M1 macrophage | M2 macrophage
+
+# CSV All_Aliases (DEFA3): DEF3; HNP-3; HNP3; HP-3; HP3
+neutrophil | neutrophils | polymorphonuclear neutrophil
+
+lymphocyte | lymphocytes
+
+# CSV All_Aliases (EPX): EPO; EPP; EPX-PEN; EPXD
+eosinophil | eosinophils | eosinophil count | eosinophil peroxidase
+
+basophil | basophils
+plasma cell | plasmablast | plasma cells
+
+## 免疫检查点分子 / Immune Checkpoint Molecules
+
+# CSV All_Aliases (RPL17): DBA22; L17; PD-1; RPL23
+# CSV All_Aliases (PDCD1, 5133): CD279; PD-1; PDCD1; hPD-1
+PD-1 | PDCD1 | CD279 | programmed cell death 1 | programmed death-1
+
+# CSV All_Aliases (CD274): ADMIO5; B7-H; B7H1; PD-L1; PDCD1L1; PDCD1LG1; PDL1; hPD-L1
+PD-L1 | CD274 | PDCD1LG1 | PDL1 | B7H1 | B7-H1 | programmed death-ligand 1 | hPD-L1
+
+# CSV All_Aliases (CTLA4): ALPS5; CD152; CELIAC3; CTLA-4; GRD4; GSE; IDDM12
+CTLA-4 | CTLA4 | CD152 | cytotoxic T-lymphocyte antigen 4 | cytotoxic T-lymphocyte-associated protein 4
+
+# CSV All_Aliases (CELSR3): ADGRC3; CDHF11; EGFL1; FMI1; HFMI1; MEGF2; RESDA1
+# Note: LAG3 gene ID is 3902; CSV matched CELSR3 which is unrelated
+LAG-3 | LAG3 | CD223 | lymphocyte activation gene 3
+
+# CSV All_Aliases (HAVCR2): CD366; HAVcr-2; KIM-3; SPTCL; TIM3; TIMD-3; TIMD3; Tim-3
+# CSV NCBI_Other_Designations: T cell immunoglobulin mucin 3|T-cell immunoglobulin and mucin domain 3
+TIM-3 | HAVCR2 | TIM3 | CD366 | Tim-3 | TIMD3 | T cell immunoglobulin mucin 3 | T-cell immunoglobulin and mucin domain 3
+
+# CSV All_Aliases (TIGIT): VSIG9; VSTM3; WUCAM
+TIGIT | VSTM3 | VSIG9 | T-cell immunoreceptor with Ig and ITIM domains
+
+# CSV All_Aliases (CD28): IMD123; Tp44
+CD28 | Tp44 | T-cell-specific surface glycoprotein CD28
+
+# CSV All_Aliases (TNFRSF9): 4-1BB; CD137; CDw137; ILA; IMD109
+4-1BB | CD137 | TNFRSF9 | ILA | 4-1BB receptor | 4-1BBL receptor
+
+# CSV All_Aliases (TNFRSF4): ACT35; CD134; IMD16; OX40; TXGP1L
+OX40 | CD134 | TNFRSF4 | ACT35 | OX40 receptor | OX40 antigen
+
+# CSV All_Aliases (LOC102723996): ICOS ligand
+ICOS | CD278 | inducible T-cell co-stimulator | ICOS ligand
+
+## 补体系统 / Complement System
+
+# CSV All_Aliases (C6): (no aliases)
+complement | complement system | complement activation
+
+CH50 | total hemolytic complement | complement hemolytic 50
+opsonization | opsonin | opsonization activity
+circulating immune complex | immune complex | CIC
+
+# CSV All_Aliases (C3): AHUS5; ARMD9; ASP; C3a; C3b; CPAMD1; HEL-S-62p
+# CSV NCBI_Other_Designations: complement component 3|C3a anaphylatoxin|C3b
+C3 | complement C3 | complement component 3 | C3a | C3b
+
+# CSV All_Aliases (C4A): C4; C4A2; C4A3; C4S; CO4; CPAMD2; RG
+# CSV NCBI_Other_Designations: complement C4-A|acidic complement C4|Rodgers form of C4
+C4 | complement C4 | complement component 4 | C4A | C4B
+
+# CSV All_Aliases (C5): C5D; C5a; C5b; CPAMD4; ECLZB
+# CSV NCBI_Other_Designations: complement component 5|C5a anaphylatoxin
+C5 | complement C5 | complement component 5 | C5a | C5b
+
+## 急性期蛋白与炎症标志物 / Acute Phase & Inflammatory Markers
+
+# CSV All_Aliases (CSRP1): CRP; CRP1; CSRP; CYRP; D1S181E
+# Note: CRP gene（Entrez 1401）的官方别名就是 CRP
+CRP | C-reactive protein | C reactive protein
+
+procalcitonin | PCT | serum procalcitonin
+
+# CSV All_Aliases (FTMT): MTF
+ferritin | serum ferritin | ferritin level | FTMT | mitochondrial ferritin
+
+erythrocyte sedimentation rate | ESR | sedimentation rate
+white blood cell | WBC | white blood cell count | leukocyte count
+lymphopenia | lymphocyte deficiency | low lymphocyte count
+
+## 待确认分类
+
+immune checkpoint | checkpoint molecule | checkpoint inhibitor
+systemic lupus erythematosus | SLE | lupus erythematosus
+Crohn disease | Crohn's disease | Crohn disease activity
+Sjogren syndrome | Sjogren's syndrome | primary Sjogren syndrome
+pattern recognition receptor | PRR | innate immune receptor
+

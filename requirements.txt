@@ -1,0 +1,32 @@
+# PubMed下载器 v4.0 依赖包
+
+# 核心依赖（必需）
+biopython>=1.81
+requests>=2.31.0
+urllib3>=2.0.0
+python-dotenv>=1.0.0  # 环境变量管理（安全性）
+
+# Zotero支持（可选）
+# 如果需要使用Zotero API下载PDF，请取消下面注释并安装
+pyzotero>=1.5.0
+
+# Selenium支持（可选，增强反反爬虫）
+# 如果需要使用浏览器自动化下载PDF，请取消下面注释并安装
+selenium>=4.15.0
+webdriver-manager>=4.0.0  # 自动管理chromedriver
+undetected-chromedriver>=3.5.0  # 绕过机器人检测（推荐）
+
+# 安装说明：
+# 1. 基础安装（仅PMC和Sci-Hub）：
+#    pip install biopython requests urllib3
+#
+# 2. 完整安装（包含Zotero）：
+#    pip install biopython requests urllib3 pyzotero
+#
+# 3. 超级完整安装（包含Selenium）：
+#    pip install biopython requests urllib3 pyzotero selenium webdriver-manager
+#
+# 注意：
+# - Selenium需要Chrome浏览器
+# - 使用webdriver-manager可以自动下载chromedriver
+# - 或手动下载chromedriver: https://chromedriver.chromium.org/downloads
